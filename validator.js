@@ -1,21 +1,21 @@
-let fs = require('fs');
+const fs = require('fs');
 
 const readFiles = () => {
-  let subscribersP = new Promise( (resolve, reject) => {
+  const subscribersP = new Promise( (resolve, reject) => {
     fs.readFile('./subscribers.txt', 'utf8', (error, subscribers) => {
       resolve(subscribers);
       reject(error);
     })
   })
 
-  let bouncedP = new Promise( (resolve, reject) => {
+  const bouncedP = new Promise( (resolve, reject) => {
     fs.readFile('./bounced.txt', 'utf8', (error, bounced) => {
       resolve(bounced)
       reject(error);
     })
   })
 
-  let unsubscribedP = new Promise( (resolve, reject) => {
+  const unsubscribedP = new Promise( (resolve, reject) => {
     fs.readFile('./unsubscribed.txt', 'utf8', (error, unsubscribed) => {
       resolve(unsubscribed)
       reject(error);
@@ -26,12 +26,13 @@ const readFiles = () => {
 }
 
 const editFiles = (content) => {
-  let subscribers = content[0].split('\n');
-  let bounced = content[1].split('\n');
-  let unsubscribed = content[2].split('\n');
+  const subscribers = content[0].split('\n');
+  const bounced = content[1].split('\n').map( email => email.toUpperCase());
+  const unsubscribed = content[2].split('\n').map( email => email.toUpperCase());
 
-  let filteredSubscribers = subscribers.filter( email => {
-    return !bounced.includes(email) && !unsubscribed.includes(email);
+  const filteredSubscribers = subscribers.filter( email => {
+    return !bounced.includes(email.toUpperCase())
+      && !unsubscribed.includes(email.toUpperCase());
   })
 
   fs.writeFile('./filteredSubscribers.txt', filteredSubscribers.join('\n'), (error) => {
