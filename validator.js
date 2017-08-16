@@ -35,8 +35,10 @@ const editFiles = (content) => {
       && !unsubscribed.includes(email.toUpperCase());
   })
 
-  fs.writeFile('./filteredSubscribers.txt', filteredSubscribers.join('\n'), (error) => {
-    error ? console.log(error) : console.log('very big success!');
+  const newFile = 'filteredSubscribers.txt';
+
+  fs.writeFile(`./${newFile}`, filteredSubscribers.join('\n'), (error) => {
+    error ? console.log(error) : console.log(`very big success! ${newFile} created`);
   })
 }
 
